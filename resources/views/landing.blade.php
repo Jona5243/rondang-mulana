@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rondang Mulana - Sewa Alat Pesta</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-blue-600">Rondang Mulana</a>
+            <div>
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium mr-4">Login</a>
+                    <a href="{{ route('register') }}"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">Daftar</a>
+                @endauth
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-blue-600 text-white py-20 text-center">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Wujudkan Pesta Impianmu</h1>
+            <p class="text-lg md:text-xl mb-8 opacity-90">Sewa tenda, kursi, dan peralatan pesta lengkap dengan mudah.
+            </p>
+            <a href="#katalog"
+                class="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-lg">Lihat
+                Katalog</a>
+        </div>
+    </header>
+
+    <main id="katalog" class="container mx-auto px-6 py-16">
+        <h2 class="text-3xl font-bold text-center mb-12">Pilihan Alat Pesta</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse ($items as $item)
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="h-56 bg-gray-200 overflow-hidden relative">
+                        @if ($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                        @else
+                            <div class="flex items-center justify-center h-full text-gray-400">
+                                <span class="text-4xl">📷</span>
+                            </div>
+                        @endif
+                        <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            {{ $item->category->name }}
+                        </span>
+                    </div>
+
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{{ $item->name }}</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                            {{ $item->description ?? 'Tidak ada deskripsi.' }}</p>
+
+                        <div class="flex justify-between items-center mt-4">
+                            <div>
+                                <span class="text-xs text-gray-500">Harga Sewa</span>
+                                <p class="text-lg font-bold text-blue-600">Rp
+                                    {{ number_format($item->price_per_day, 0, ',', '.') }} <span
+                                        class="text-sm font-normal text-gray-500">/hari</span></p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-gray-500 block">Stok: {{ $item->stock }}</span>
+                                <button
+                                    class="mt-2 bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-700 transition">
+                                    Sewa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-3 text-center py-12">
+                    <p class="text-gray-500 text-lg">Belum ada barang yang tersedia saat ini.</p>
+                </div>
+            @endforelse
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <p>&copy; {{ date('Y') }} Rondang Mulana. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>
