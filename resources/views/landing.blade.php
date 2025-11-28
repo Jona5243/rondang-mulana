@@ -15,6 +15,15 @@
             <a href="/" class="text-2xl font-bold text-blue-600">Rondang Mulana</a>
             <div>
                 @auth
+                    <a href="{{ route('cart.index') }}" class="relative text-gray-700 hover:text-blue-600 font-medium mr-6">
+                        🛒 Keranjang
+                        @if (session('cart') && count(session('cart')) > 0)
+                            <span
+                                class="absolute -top-2 -right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                {{ count((array) session('cart')) }}
+                            </span>
+                        @endif
+                    </a>
                     <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium mr-4">Login</a>
@@ -70,10 +79,10 @@
                             </div>
                             <div class="text-right">
                                 <span class="text-xs text-gray-500 block">Stok: {{ $item->stock }}</span>
-                                <button
-                                    class="mt-2 bg-gray-900 text-white px-4 py-2 rounded text-sm hover:bg-gray-700 transition">
-                                    Sewa
-                                </button>
+                                <a href="{{ route('add_to_cart', $item->id) }}"
+                                    class="mt-2 inline-block bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition">
+                                    + Keranjang
+                                </a>
                             </div>
                         </div>
                     </div>
