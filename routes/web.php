@@ -77,6 +77,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/rentals', [AdminRentalController::class, 'index'])->name('rentals.index');
     Route::get('/rentals/{id}', [AdminRentalController::class, 'show'])->name('rentals.show');
     Route::put('/rentals/{id}', [AdminRentalController::class, 'update'])->name('rentals.update');
+    Route::get('/rentals/{id}/print', [AdminRentalController::class, 'print'])->name('rentals.print');
 });
 
 require __DIR__ . '/auth.php';

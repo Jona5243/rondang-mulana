@@ -58,22 +58,12 @@
                         </td>
 
                         <td class="px-6 py-4">
-                            <form action="{{ route('admin.rentals.update', $rental->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-
-                                <select name="status" onchange="this.form.submit()"
-                                    class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                    <option value="pending" {{ $rental->status == 'pending' ? 'selected' : '' }}>Pending
-                                    </option>
-                                    <option value="approved" {{ $rental->status == 'approved' ? 'selected' : '' }}>Approve
-                                        (Setuju)</option>
-                                    <option value="completed" {{ $rental->status == 'completed' ? 'selected' : '' }}>
-                                        Selesai (Kembali)</option>
-                                    <option value="cancelled" {{ $rental->status == 'cancelled' ? 'selected' : '' }}>
-                                        Batalkan</option>
-                                </select>
-                            </form>
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('admin.rentals.show', $rental->id) }}"
+                                    class="inline-flex items-center justify-center rounded-md border border-primary py-2 px-4 text-center font-medium text-primary hover:bg-opacity-90 lg:px-4 xl:px-4 text-sm hover:bg-blue-50 transition">
+                                    Lihat Detail
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty

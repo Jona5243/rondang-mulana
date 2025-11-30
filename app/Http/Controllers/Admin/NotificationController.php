@@ -36,21 +36,21 @@ class NotificationController extends Controller
     // 1. Tandai SEMUA sebagai sudah dibaca
     public function markAllRead()
     {
-        \Illuminate\Support\Facades\Auth::user()->unreadNotifications->markAsRead();
+        Auth::user()->unreadNotifications->markAsRead();
         return redirect()->back()->with('success', 'Semua notifikasi ditandai sebagai sudah dibaca.');
     }
 
     // 2. Hapus SEMUA notifikasi (Bersih-bersih)
     public function deleteAll()
     {
-        \Illuminate\Support\Facades\Auth::user()->notifications()->delete();
+        Auth::user()->notifications()->delete();
         return redirect()->back()->with('success', 'Semua notifikasi berhasil dihapus.');
     }
 
     // 3. Hapus SATU notifikasi saja
     public function destroy($id)
     {
-        $notification = \Illuminate\Support\Facades\Auth::user()->notifications()->findOrFail($id);
+        $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->delete();
         return redirect()->back()->with('success', 'Notifikasi dihapus.');
     }

@@ -72,10 +72,20 @@ class RentalController extends Controller
         return view('admin.calendar.index');
     }
 
-    // Menampilkan Detail Satu Pesanan
+    // 4. Menampilkan Detail Satu Pesanan
     public function show($id)
     {
         $rental = Rental::with(['user', 'items.item'])->findOrFail($id);
         return view('admin.rentals.show', compact('rental'));
+    }
+
+    // 5. Cetak Invoice / Surat Jalan
+    public function print($id)
+    {
+        // Ambil data pesanan
+        $rental = Rental::with(['user', 'items.item'])->findOrFail($id);
+        
+        // Tampilkan view khusus print
+        return view('admin.rentals.print', compact('rental'));
     }
 }
