@@ -15,16 +15,26 @@
             <a href="/" class="text-2xl font-bold text-blue-600">Rondang Mulana</a>
             <div>
                 @auth
-                    <a href="{{ route('cart.index') }}" class="relative text-gray-700 hover:text-blue-600 font-medium mr-6">
-                        🛒 Keranjang
-                        @if (session('cart') && count(session('cart')) > 0)
-                            <span
-                                class="absolute -top-2 -right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                                {{ count((array) session('cart')) }}
-                            </span>
-                        @endif
-                    </a>
-                    <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ route('cart.index') }}"
+                            class="relative text-gray-700 hover:text-blue-600 font-medium mr-6">
+                            🛒 Keranjang
+                            @if (session('cart') && count(session('cart')) > 0)
+                                <span
+                                    class="absolute -top-2 -right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                    {{ count((array) session('cart')) }}
+                                </span>
+                            @endif
+                            <a href="{{ route('dashboard') }}"
+                                class="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                                title="Profil Pengguna">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 256 256">
+                                    <path
+                                        d="M172,120a44,44,0,1,1-44-44A44.05,44.05,0,0,1,172,120Zm60,8A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.09,88.09,0,0,0-91.47-87.93C77.43,41.89,39.87,81.12,40,128.25a87.65,87.65,0,0,0,22.24,58.16A79.71,79.71,0,0,1,84,165.1a4,4,0,0,1,4.83.32,59.83,59.83,0,0,0,78.28,0,4,4,0,0,1,4.83-.32,79.71,79.71,0,0,1,21.79,21.31A87.62,87.62,0,0,0,216,128Z">
+                                    </path>
+                                </svg>
+                            </a>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 font-medium mr-4">Login</a>
                     <a href="{{ route('register') }}"
@@ -46,9 +56,23 @@
     </header>
 
     <main id="katalog" class="container mx-auto px-6 py-16">
+        <div class="max-w-2xl mx-auto mb-10">
+            <form action="{{ route('landing') }}" method="GET" class="flex">
+                <input type="text" name="search" placeholder="Cari tenda, kursi, atau panggung..."
+                    value="{{ request('search') }}"
+                    class="w-full border border-gray-300 p-3 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <button type="submit" class="bg-blue-600 text-white p-3 rounded-r-lg hover:bg-blue-700 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
         <h2 class="text-3xl font-bold text-center mb-12">Pilihan Alat Pesta</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             @forelse ($items as $item)
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
                     <div class="h-56 bg-gray-200 overflow-hidden relative">

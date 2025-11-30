@@ -10,11 +10,22 @@ class LandingController extends Controller
     /**
      * Menampilkan halaman depan (Katalog)
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua barang, urutkan dari yang terbaru
-        // 'with' category agar kita bisa tampilkan nama kategorinya
-        $items = Item::with('category')->latest()->get();
+        // Mulai query dengan eager loading 'category'
+        $query = Item::with('category')->latest();
+
+        // LOGIKA PENCARIAN
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        $items = $query->get();
 
         return view('landing', [
             'items' => $items
