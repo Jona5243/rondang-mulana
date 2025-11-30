@@ -12,10 +12,33 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Menampilkan Halaman Profil Admin (View Only).
      */
+    public function show(Request $request): View
+    {
+        // Pastikan hanya admin yang bisa lihat tampilan ini
+        if ($request->user()->role === \App\Enums\UserRole::ADMIN) {
+            return view('admin.profile.show', [
+                'user' => $request->user(),
+            ]);
+        }
+
+        // Jika user biasa, langsung ke edit saja (atau buat view user nanti)
+        return view('profile.edit', [
+            'user' => $request->user(),
+        ]);
+    }
+
     public function edit(Request $request): View
     {
+        // LOGIKA BARU: Cek jika Admin
+        if ($request->user()->role === \App\Enums\UserRole::ADMIN) {
+            return view('admin.profile.edit', [
+                'user' => $request->user(),
+            ]);
+        }
+
+        // Tampilan User Biasa (Bawaan)
         return view('profile.edit', [
             'user' => $request->user(),
         ]);

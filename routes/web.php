@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\RentalController as AdminRentalController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Rental;
 
@@ -78,6 +79,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/rentals/{id}', [AdminRentalController::class, 'show'])->name('rentals.show');
     Route::put('/rentals/{id}', [AdminRentalController::class, 'update'])->name('rentals.update');
     Route::get('/rentals/{id}/print', [AdminRentalController::class, 'print'])->name('rentals.print');
+
+    // MANAJEMEN USER (Tambahkan ini)
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // RUTE PROFIL (VIEW)
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
 });
 
 require __DIR__ . '/auth.php';
