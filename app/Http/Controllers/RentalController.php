@@ -6,7 +6,10 @@ use App\Models\Rental;
 use App\Models\RentalItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; // Untuk transaksi database
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Notifications\NewOrderReceived;
+use App\Enums\UserRole;
 
 class RentalController extends Controller
 {
@@ -70,6 +73,18 @@ class RentalController extends Controller
                 ]);
             }
         });
+
+        // 1. Cari Admin (bisa lebih dari 1)
+        $admins = User::where('role', UserRole::ADMIN)->get();
+
+        // 2. Kirim Notifikasi ke semua Admin
+        // Pastikan variabel $rental tersedia (ambil dari return transaction atau query ulang)
+        // Agar aman, kita ambil rental terakhir user ini:
+        $latestRental = Rental::where('user_id', Auth::id())->latest()->first();
+
+        foreach ($admins as $admin) {
+            $admin->notify(new NewOrderReceived($latestRental));
+        }
 
         // 3. Kosongkan Keranjang
         session()->forget('cart');
